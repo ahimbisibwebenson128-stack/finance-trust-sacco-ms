@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: finance-trust-sacco-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash render-start.sh
+    healthCheckPath: /health/
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.4
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_MODE
+        value: postgres
+      - key: DATABASE_NAME
+        fromDatabase:
+          name: finance-trust-sacco-db
+          property: database
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: finance-trust-sacco-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: finance-trust-sacco-db
+          property: password
+      - key: DATABASE_HOST
+        fromDatabase:
+          name: finance-trust-sacco-db
+          property: host
+      - key: DATABASE_PORT
+        fromDatabase:
+          name: finance-trust-sacco-db
+          property: port
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://finance-trust-sacco-ms.vercel.app
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://finance-trust-sacco-ms.vercel.app
+      - key: TIME_ZONE
+        value: Africa/Kampala
+databases:
+  - name: finance-trust-sacco-db
+    databaseName: finance_trust_sacco
+    user: finance_trust_user
